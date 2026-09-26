@@ -1,0 +1,56 @@
+@model IEnumerable<EXAMENPARCIAL.Models.Incidencia>
+
+@{
+    ViewData["Title"] = "Incidencias";
+    var tituloPagina = ViewData["TituloPagina"] as string ?? "Incidencias abiertas";
+    var searchTerm = ViewData["SearchTerm"] as string;
+}
+
+<div class="container mt-4">
+    <!-- TÍTULO COMPARTIDO OBLIGATORIO -->
+    <h1>@tituloPagina</h1>
+
+    <!-- Formulario de Búsqueda -->
+    <form method="get" asp-action="Index" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="searchTerm" class="form-control" placeholder="Buscar por estación o descripción..." value="@searchTerm" />
+            <button type="submit" class="btn btn-primary">Buscar</button>
+            @if (!string.IsNullOrEmpty(searchTerm))
+            {
+                <a asp-action="Index" class="btn btn-secondary">Limpiar</a>
+            }
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Estación</th>
+                <th>Descripción</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Estacion</td>
+                    <td>@item.Descripcion</td>
+                    <td>@item.Prioridad</td>
+                    <td>@item.Estado</td>
+                    <td>
+                        @if (item.Estado == "Abierta")
+                        {
+                            <form asp-action="Cerrar" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Cerrar</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
