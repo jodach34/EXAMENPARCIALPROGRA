@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\JOEL CONDOR\\Desktop\\PROGRAMACION 1\\EXAMENPARCIAL\\EXAMENPARCIAL.csproj": {}
+    "c:\\Users\\JOEL CONDOR\\Desktop\\PROGRAMACION 1\\EXAMENPARCIAL\\EXAMENPARCIAL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\JOEL CONDOR\\Desktop\\PROGRAMACION 1\\EXAMENPARCIAL\\EXAMENPARCIAL.csproj": {
+    "c:\\Users\\JOEL CONDOR\\Desktop\\PROGRAMACION 1\\EXAMENPARCIAL\\EXAMENPARCIAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JOEL CONDOR\\Desktop\\PROGRAMACION 1\\EXAMENPARCIAL\\EXAMENPARCIAL.csproj",
+        "projectUniqueName": "c:\\Users\\JOEL CONDOR\\Desktop\\PROGRAMACION 1\\EXAMENPARCIAL\\EXAMENPARCIAL.csproj",
         "projectName": "EXAMENPARCIAL",
-        "projectPath": "C:\\Users\\JOEL CONDOR\\Desktop\\PROGRAMACION 1\\EXAMENPARCIAL\\EXAMENPARCIAL.csproj",
+        "projectPath": "c:\\Users\\JOEL CONDOR\\Desktop\\PROGRAMACION 1\\EXAMENPARCIAL\\EXAMENPARCIAL.csproj",
         "packagesPath": "C:\\Users\\JOEL CONDOR\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JOEL CONDOR\\Desktop\\PROGRAMACION 1\\EXAMENPARCIAL\\obj\\",
+        "outputPath": "c:\\Users\\JOEL CONDOR\\Desktop\\PROGRAMACION 1\\EXAMENPARCIAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\JOEL CONDOR\\AppData\\Roaming\\NuGet\\NuGet.Config"
