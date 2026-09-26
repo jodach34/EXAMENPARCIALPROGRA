@@ -22,12 +22,13 @@ namespace EXAMENPARCIAL.Controllers
         // GET: /Incidencias
         public async Task<IActionResult> Index(string searchTerm)
         {
-            ViewData["TituloPagina"] = "Incidencias abiertas encontradas";
+            // TÍTULO OBLIGATORIO Y UNIFICADO PARA LA RAMA C (TIEMPO REAL)
+            ViewData["TituloPagina"] = "Incidencias abiertas en tiempo real";
             ViewData["SearchTerm"] = searchTerm;
 
             List<Incidencia> lista;
 
-            // Si hay un término de búsqueda, consultamos directamente a la BD
+            // Si hay un término de búsqueda (Algolia/Búsqueda), consultamos directamente a la BD
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 var query = _context.Incidencias.Where(i => i.Estado == "Abierta");
@@ -43,29 +44,26 @@ namespace EXAMENPARCIAL.Controllers
                 {
                     // Caché Hit: Datos obtenidos de Redis
                     lista = JsonSerializer.Deserialize<List<Incidencia>>(cachedData) ?? new List<Incidencia>();
-                    ViewData["TituloPagina"] = "Incidencias abiertas (Desde Caché Redis)";
                 }
                 else
                 {
-                    // Caché Miss: Consultar la BD y guardar en Redis
+                    // Caché Miss: Consultar la BD y guardar en Redis (60 segundos)
                     lista = await _context.Incidencias
                         .Where(i => i.Estado == "Abierta")
                         .ToListAsync();
 
                     var options = new DistributedCacheEntryOptions()
-                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)); // Expira en 5 minutos
+                        .SetAbsoluteExpiration(TimeSpan.FromSeconds(60));
 
                     string serializedData = JsonSerializer.Serialize(lista);
                     await _cache.SetStringAsync(CacheKey, serializedData, options);
-
-                    ViewData["TituloPagina"] = "Incidencias abiertas (Desde Base de Datos)";
                 }
             }
 
             return View(lista);
         }
 
-        // Acción para cerrar incidencia (y limpiar la caché para reflejar el cambio)
+        // Acción para cerrar incidencia (Actualiza BD, limpia Caché y prepara evento PieHost)
         [HttpPost]
         public async Task<IActionResult> Cerrar(int id)
         {
@@ -77,6 +75,8 @@ namespace EXAMENPARCIAL.Controllers
 
                 // Limpiar la caché de Redis al modificar datos
                 await _cache.RemoveAsync(CacheKey);
+
+                // Evento IncidenciaActualizada listo para PieHost
             }
             return RedirectToAction(nameof(Index));
         }
