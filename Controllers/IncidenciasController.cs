@@ -22,7 +22,8 @@ namespace EXAMENPARCIAL.Controllers
         // GET: /Incidencias
         public async Task<IActionResult> Index(string searchTerm)
         {
-            ViewData["TituloPagina"] = "Incidencias abiertas encontradas";
+            // TÍTULO OBLIGATORIO PARA LA PREGUNTA 2 (REDIS)
+            ViewData["TituloPagina"] = "Incidencias abiertas con consulta rápida";
             ViewData["SearchTerm"] = searchTerm;
 
             List<Incidencia> lista;
@@ -43,7 +44,6 @@ namespace EXAMENPARCIAL.Controllers
                 {
                     // Caché Hit: Datos obtenidos de Redis
                     lista = JsonSerializer.Deserialize<List<Incidencia>>(cachedData) ?? new List<Incidencia>();
-                    ViewData["TituloPagina"] = "Incidencias abiertas (Desde Caché Redis)";
                 }
                 else
                 {
@@ -53,12 +53,10 @@ namespace EXAMENPARCIAL.Controllers
                         .ToListAsync();
 
                     var options = new DistributedCacheEntryOptions()
-                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)); // Expira en 5 minutos
+                        .SetAbsoluteExpiration(TimeSpan.FromSeconds(60)); // 60 segundos como pide el examen
 
                     string serializedData = JsonSerializer.Serialize(lista);
                     await _cache.SetStringAsync(CacheKey, serializedData, options);
-
-                    ViewData["TituloPagina"] = "Incidencias abiertas (Desde Base de Datos)";
                 }
             }
 
